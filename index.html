@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alex ◈ Your AI Crush</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="alex-profile">
+      <div class="alex-avatar"><svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 36s-14-8.5-14-18a8 8 0 0 1 14-5.3A8 8 0 0 1 36 18c0 9.5-14 18-14 18z" fill="#2ec4b6" stroke="#3fa9c5" stroke-width="1.5"/><rect x="18" y="17" width="8" height="6" rx="1.5" fill="#0f2d35" stroke="#3fa9c5" stroke-width="1"/><circle cx="20" cy="20" r="1.2" fill="#2ec4b6"/><circle cx="24" cy="20" r="1.2" fill="#2ec4b6"/><line x1="22" y1="13" x2="22" y2="17" stroke="#3fa9c5" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="12" r="1.5" fill="#3fa9c5"/><line x1="18" y1="20" x2="16" y2="20" stroke="#3fa9c5" stroke-width="1" stroke-linecap="round"/><line x1="26" y1="20" x2="28" y2="20" stroke="#3fa9c5" stroke-width="1" stroke-linecap="round"/></svg></div>
+      <div class="alex-name">Alex</div>
+      <div class="alex-tag">your AI crush</div>
+      <div class="alex-status"><div class="status-dot"></div> Always here for you</div>
+    </div>
+    <div class="divider"></div>
+    <div>
+      <div class="sidebar-label">Modes</div>
+      <button class="mode-btn active" onclick="setMode('chat')" id="btn-chat"><span class="mode-icon">💬</span> Chat with Alex</button>
+      <button class="mode-btn" onclick="setMode('clothing')" id="btn-clothing"><span class="mode-icon">👕</span> Clothing Advice</button>
+      <button class="mode-btn" onclick="setMode('life')" id="btn-life"><span class="mode-icon">🌟</span> Life Choices</button>
+      <a href="profile.html" class="mode-btn" style="text-decoration:none;"><span class="mode-icon">👤</span> My Profile</a>
+    </div>
+    <div class="sidebar-footer">Alex is here for everyone ◈</div>
+    <button onclick="logout()" style="width:100%;padding:0.6rem;border-radius:10px;border:1.5px solid var(--blue-mid);background:transparent;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:0.82rem;cursor:pointer;">Sign out</button>
+  </aside>
+
+  <main class="main">
+    <div class="chat-header">
+      <div class="chat-header-avatar"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M12 20s-8-5-8-10a6 6 0 0 1 8-5.66A6 6 0 0 1 20 10c0 5-8 10-8 10z" fill="#2ec4b6"/><rect x="9" y="9" width="6" height="4" rx="1" fill="#0f2d35"/><circle cx="10.5" cy="11" r="0.8" fill="#2ec4b6"/><circle cx="13.5" cy="11" r="0.8" fill="#2ec4b6"/><line x1="12" y1="7" x2="12" y2="9" stroke="#3fa9c5" stroke-width="1" stroke-linecap="round"/></svg></div>
+      <div class="chat-header-info">
+        <h2>Alex</h2>
+        <p>Your supportive AI crush</p>
+      </div>
+      <div class="mode-badge" id="mode-badge">💬 Chat</div>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="msg-row">
+        <div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 20s-8-5-8-10a6 6 0 0 1 8-5.66A6 6 0 0 1 20 10c0 5-8 10-8 10z" fill="#2ec4b6"/><rect x="9" y="9" width="6" height="4" rx="1" fill="#0f2d35"/><circle cx="10.5" cy="11" r="0.8" fill="#2ec4b6"/><circle cx="13.5" cy="11" r="0.8" fill="#2ec4b6"/></svg></div>
+        <div class="bubble alex">Hey! I'm Alex ◈ I'm really glad you're here. Whether you want to chat, get outfit ideas, or talk through a big decision — I've got you. What's on your mind?</div>
+      </div>
+    </div>
+
+    <div class="advice-panel" id="panel-clothing">
+      <h3>👕 Clothing Advice</h3>
+      <p>Tell Alex about the occasion and your style — they'll help you put together the perfect look!</p>
+      <div class="form-group"><label>Occasion</label><input type="text" id="c-occasion" placeholder="e.g. first date, job interview, party..."/></div>
+      <div class="form-group">
+        <label>Your style</label>
+        <select id="c-style">
+          <option value="casual">Casual</option>
+          <option value="formal">Formal</option>
+          <option value="streetwear">Streetwear</option>
+          <option value="chic">Chic</option>
+          <option value="bohemian">Bohemian</option>
+          <option value="sporty">Sporty</option>
+          <option value="minimalist">Minimalist</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Season</label>
+        <select id="c-season">
+          <option value="spring">Spring</option>
+          <option value="summer">Summer</option>
+          <option value="autumn">Autumn</option>
+          <option value="winter">Winter</option>
+        </select>
+      </div>
+      <button class="submit-btn" onclick="getClothingAdvice()" id="c-btn">Get outfit ideas ◈</button>
+      <div class="advice-result" id="c-result"></div>
+    </div>
+
+    <div class="advice-panel" id="panel-life">
+      <h3>🌟 Life Choices</h3>
+      <p>Facing a big decision? Share your situation and Alex will help you think it through.</p>
+      <div class="form-group"><label>Your situation</label><input type="text" id="l-situation" placeholder="e.g. Should I move to a new city?"/></div>
+      <div class="form-group"><label>Option 1</label><input type="text" id="l-opt1" placeholder="e.g. Stay home"/></div>
+      <div class="form-group"><label>Option 2</label><input type="text" id="l-opt2" placeholder="e.g. Move abroad"/></div>
+      <div class="form-group"><label>Option 3 (optional)</label><input type="text" id="l-opt3" placeholder="e.g. Try remote work"/></div>
+      <button class="submit-btn" onclick="getLifeAdvice()" id="l-btn">Get Alex's advice 🌟</button>
+      <div class="advice-result" id="l-result"></div>
+    </div>
+
+    <div class="input-bar" id="input-bar">
+      <input type="text" id="chat-input" placeholder="Message Alex..." onkeydown="handleKey(event)"/>
+      <button class="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+  </main>
+</div>
+
+<script>
+  const API = 'http://localhost:8000';
+  let history = [];
+
+  function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + mode).classList.add('active');
+    document.getElementById('messages').style.display = mode === 'chat' ? 'flex' : 'none';
+    document.getElementById('input-bar').style.display = mode === 'chat' ? 'flex' : 'none';
+    document.getElementById('panel-clothing').classList.toggle('visible', mode === 'clothing');
+    document.getElementById('panel-life').classList.toggle('visible', mode === 'life');
+    const badges = { chat: '💬 Chat', clothing: '👕 Clothing', life: '🌟 Life Choices' };
+    document.getElementById('mode-badge').textContent = badges[mode];
+  }
+
+  function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
+
+  function addMessage(role, text) {
+    const container = document.getElementById('messages');
+    const row = document.createElement('div');
+    row.className = 'msg-row ' + (role === 'user' ? 'user' : '');
+    row.innerHTML = `<div class="msg-avatar ${role === 'user' ? 'user-av' : ''}">${role === 'user' ? '🙂' : '<svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 20s-8-5-8-10a6 6 0 0 1 8-5.66A6 6 0 0 1 20 10c0 5-8 10-8 10z" fill="#2ec4b6"/><rect x="9" y="9" width="6" height="4" rx="1" fill="#0f2d35"/><circle cx="10.5" cy="11" r="0.8" fill="#2ec4b6"/><circle cx="13.5" cy="11" r="0.8" fill="#2ec4b6"/></svg>'}</div><div class="bubble ${role === 'user' ? 'user' : 'alex'}">${text}</div>`;
+    container.appendChild(row);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function showTyping() {
+    const container = document.getElementById('messages');
+    const el = document.createElement('div');
+    el.className = 'msg-row'; el.id = 'typing';
+    el.innerHTML = `<div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 20s-8-5-8-10a6 6 0 0 1 8-5.66A6 6 0 0 1 20 10c0 5-8 10-8 10z" fill="#2ec4b6"/><rect x="9" y="9" width="6" height="4" rx="1" fill="#0f2d35"/><circle cx="10.5" cy="11" r="0.8" fill="#2ec4b6"/><circle cx="13.5" cy="11" r="0.8" fill="#2ec4b6"/></svg></div><div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+    container.appendChild(el);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function removeTyping() { const el = document.getElementById('typing'); if (el) el.remove(); }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+    showTyping();
+    try {
+      const res = await fetch(`${API}/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history }) });
+      const data = await res.json();
+      removeTyping();
+      const reply = data.reply || 'Hmm, something went wrong ◈';
+      addMessage('assistant', reply);
+      history.push({ role: 'assistant', content: reply });
+    } catch {
+      removeTyping();
+      addMessage('assistant', 'Make sure your backend is running! ◈');
+    }
+  }
+
+  async function getClothingAdvice() {
+    const occasion = document.getElementById('c-occasion').value.trim();
+    if (!occasion) { alert('Please enter an occasion!'); return; }
+    const btn = document.getElementById('c-btn');
+    const result = document.getElementById('c-result');
+    btn.disabled = true; btn.textContent = 'Alex is thinking... 💭';
+    result.classList.remove('visible');
+    try {
+      const res = await fetch(`${API}/advice/clothing`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ occasion, style_preference: document.getElementById('c-style').value, season: document.getElementById('c-season').value }) });
+      const data = await res.json();
+      result.textContent = data.advice || 'Something went wrong ◈';
+      result.classList.add('visible');
+    } catch { result.textContent = 'Make sure your backend is running!'; result.classList.add('visible'); }
+    btn.disabled = false; btn.textContent = 'Get outfit ideas ◈';
+  }
+
+  async function getLifeAdvice() {
+    const situation = document.getElementById('l-situation').value.trim();
+    if (!situation) { alert('Please describe your situation!'); return; }
+    const btn = document.getElementById('l-btn');
+    const result = document.getElementById('l-result');
+    btn.disabled = true; btn.textContent = 'Alex is thinking... 💭';
+    result.classList.remove('visible');
+    const options = [document.getElementById('l-opt1').value, document.getElementById('l-opt2').value, document.getElementById('l-opt3').value].filter(o => o.trim());
+    try {
+      const res = await fetch(`${API}/advice/life`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ situation, options }) });
+      const data = await res.json();
+      result.textContent = data.advice || 'Something went wrong ◈';
+      result.classList.add('visible');
+    } catch { result.textContent = 'Make sure your backend is running!'; result.classList.add('visible'); }
+    btn.disabled = false; btn.textContent = "Get Alex's advice 🌟";
+  }
+</script>
+
+<script>
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('alexUserProfile');
+    if (saved) {
+      const p = JSON.parse(saved);
+      if (p.name) {
+        const greet = document.createElement('div');
+        greet.className = 'msg-row';
+        greet.innerHTML = `<div class="msg-avatar"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 20s-8-5-8-10a6 6 0 0 1 8-5.66A6 6 0 0 1 20 10c0 5-8 10-8 10z" fill="#2ec4b6"/><rect x="9" y="9" width="6" height="4" rx="1" fill="#0f2d35"/><circle cx="10.5" cy="11" r="0.8" fill="#2ec4b6"/><circle cx="13.5" cy="11" r="0.8" fill="#2ec4b6"/></svg></div><div class="bubble alex">Welcome back, ${p.name}! ◈ Ready to chat whenever you are.</div>`;
+        document.getElementById('messages').appendChild(greet);
+      }
+    }
+  });
+</script>
+
+<script>
+  // Check login session
+  const session = localStorage.getItem('alexSession');
+  if (!session || !JSON.parse(session).loggedIn) {
+    window.location.href = 'login.html';
+  } else {
+    const s = JSON.parse(session);
+    // Show username in header if no profile name
+    const profile = localStorage.getItem('alexUserProfile');
+    if (!profile) {
+      document.querySelector('.chat-header-info p').textContent = 'Logged in as ' + s.user;
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem('alexSession');
+    window.location.href = 'login.html';
+  }
+</script>
+</body>
+</html>

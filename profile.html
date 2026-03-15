@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Profile ◈ Alex</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .profile-wrap {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 2rem;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid var(--blue-mid);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%; max-width: 480px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .profile-card-header {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem;
+      margin-bottom: 2rem; text-align: center;
+    }
+
+    .profile-card-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem; font-weight: 400;
+      color: var(--text);
+    }
+
+    .profile-card-header p {
+      font-size: 0.85rem; color: var(--text-muted);
+    }
+
+    /* Avatar upload */
+    .avatar-upload {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .avatar-preview {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--blue-soft);
+      border: 2px dashed var(--blue-mid);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; overflow: hidden;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+
+    .avatar-preview:hover { border-color: var(--blue); }
+
+    .avatar-preview img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 50%; display: none;
+    }
+
+    .avatar-preview .avatar-placeholder {
+      font-size: 2rem; color: var(--text-muted);
+    }
+
+    .avatar-upload label {
+      font-size: 0.8rem; color: var(--blue-dark);
+      cursor: pointer; font-weight: 500;
+    }
+
+    #avatar-input { display: none; }
+
+    /* Form */
+    .profile-form {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+
+    .profile-form .form-group label {
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 4px; display: block;
+    }
+
+    .profile-form .form-group input,
+    .profile-form .form-group select {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border: 1.5px solid var(--blue-mid);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      background: white; color: var(--text);
+      outline: none; transition: border-color 0.2s;
+    }
+
+    .profile-form .form-group input:focus,
+    .profile-form .form-group select:focus { border-color: var(--blue); }
+
+    .save-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      color: white; border: none; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; margin-top: 0.5rem;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .save-btn:hover { opacity: 0.9; }
+    .save-btn:active { transform: scale(0.99); }
+
+    .back-link {
+      display: block; text-align: center;
+      margin-top: 1rem; font-size: 0.83rem;
+      color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--blue-dark); }
+
+    /* Saved banner */
+    .saved-banner {
+      display: none;
+      background: #e6faf5;
+      border: 1px solid #2ec4b640;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: var(--teal-dark, #1a8a7e);
+      text-align: center;
+      animation: msgIn 0.3s ease;
+    }
+
+    .saved-banner.visible { display: block; }
+
+    /* Profile display (after save) */
+    .profile-display {
+      display: none;
+      flex-direction: column; align-items: center;
+      gap: 1rem; text-align: center;
+    }
+
+    .profile-display.visible { display: flex; }
+
+    .profile-display-avatar {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--teal));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; overflow: hidden;
+    }
+
+    .profile-display-avatar img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .profile-display h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; font-weight: 400;
+    }
+
+    .profile-tags {
+      display: flex; flex-wrap: wrap;
+      gap: 8px; justify-content: center;
+    }
+
+    .profile-tag {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      border: 1px solid var(--blue-mid);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.78rem; font-weight: 500;
+    }
+
+    .edit-btn {
+      padding: 0.7rem 1.5rem;
+      background: transparent;
+      border: 1.5px solid var(--blue);
+      border-radius: 12px;
+      color: var(--blue-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .edit-btn:hover { background: var(--blue-soft); }
+  </style>
+</head>
+<body>
+<div class="profile-wrap">
+  <div class="profile-card">
+
+    <!-- Header -->
+    <div class="profile-card-header">
+      <div class="alex-avatar" style="width:50px;height:50px;margin-bottom:0.5rem;">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;">
+          <path d="M22 36s-14-8.5-14-18a8 8 0 0 1 14-5.3A8 8 0 0 1 36 18c0 9.5-14 18-14 18z" fill="#2ec4b6" stroke="#3fa9c5" stroke-width="1.5"/>
+          <rect x="18" y="17" width="8" height="6" rx="1.5" fill="#0f2d35" stroke="#3fa9c5" stroke-width="1"/>
+          <circle cx="20" cy="20" r="1.2" fill="#2ec4b6"/>
+          <circle cx="24" cy="20" r="1.2" fill="#2ec4b6"/>
+          <line x1="22" y1="13" x2="22" y2="17" stroke="#3fa9c5" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="22" cy="12" r="1.5" fill="#3fa9c5"/>
+        </svg>
+      </div>
+      <h1>Your Profile</h1>
+      <p>Alex will use this to personalize your experience</p>
+    </div>
+
+    <!-- Saved banner -->
+    <div class="saved-banner" id="saved-banner">✓ Profile saved! Alex knows you now 💙</div>
+
+    <!-- Profile display (after saving) -->
+    <div class="profile-display" id="profile-display">
+      <div class="profile-display-avatar" id="display-avatar">👤</div>
+      <h2 id="display-name">Your Name</h2>
+      <div class="profile-tags" id="display-tags"></div>
+      <button class="edit-btn" onclick="showForm()">Edit profile</button>
+      <a href="index.html" class="back-link">← Back to chat with Alex</a>
+    </div>
+
+    <!-- Profile form -->
+    <div id="profile-form-wrap">
+      <div class="avatar-upload">
+        <div class="avatar-preview" onclick="document.getElementById('avatar-input').click()">
+          <img id="avatar-img" src="" alt="Profile picture"/>
+          <span class="avatar-placeholder" id="avatar-placeholder">👤</span>
+        </div>
+        <label for="avatar-input">Upload photo</label>
+        <input type="file" id="avatar-input" accept="image/*" onchange="previewAvatar(event)"/>
+      </div>
+
+      <div class="profile-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="p-name" placeholder="Your name"/>
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="p-age" placeholder="e.g. 24" min="13" max="99"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="p-gender">
+            <option value="">Prefer not to say</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Preferred style</label>
+          <select id="p-style">
+            <option value="Casual">Casual</option>
+            <option value="Formal">Formal</option>
+            <option value="Streetwear">Streetwear</option>
+            <option value="Chic">Chic</option>
+            <option value="Bohemian">Bohemian</option>
+            <option value="Sporty">Sporty</option>
+            <option value="Minimalist">Minimalist</option>
+          </select>
+        </div>
+
+        <button class="save-btn" onclick="saveProfile()">Save profile ◈</button>
+        <a href="index.html" class="back-link">← Back to chat with Alex</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let avatarData = null;
+
+  // Load existing profile on page load
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('alexUserProfile');
+    if (saved) {
+      const p = JSON.parse(saved);
+      document.getElementById('p-name').value = p.name || '';
+      document.getElementById('p-age').value = p.age || '';
+      document.getElementById('p-gender').value = p.gender || '';
+      document.getElementById('p-style').value = p.style || 'Casual';
+      if (p.avatar) {
+        avatarData = p.avatar;
+        document.getElementById('avatar-img').src = p.avatar;
+        document.getElementById('avatar-img').style.display = 'block';
+        document.getElementById('avatar-placeholder').style.display = 'none';
+      }
+      showProfileDisplay(p);
+    }
+  });
+
+  function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      avatarData = e.target.result;
+      document.getElementById('avatar-img').src = avatarData;
+      document.getElementById('avatar-img').style.display = 'block';
+      document.getElementById('avatar-placeholder').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function saveProfile() {
+    const profile = {
+      name:   document.getElementById('p-name').value.trim() || 'Friend',
+      age:    document.getElementById('p-age').value,
+      gender: document.getElementById('p-gender').value,
+      style:  document.getElementById('p-style').value,
+      avatar: avatarData
+    };
+
+    localStorage.setItem('alexUserProfile', JSON.stringify(profile));
+
+    const banner = document.getElementById('saved-banner');
+    banner.classList.add('visible');
+    setTimeout(() => banner.classList.remove('visible'), 3000);
+
+    showProfileDisplay(profile);
+  }
+
+  function showProfileDisplay(p) {
+    document.getElementById('profile-form-wrap').style.display = 'none';
+    const display = document.getElementById('profile-display');
+    display.classList.add('visible');
+
+    // Avatar
+    const dispAvatar = document.getElementById('display-avatar');
+    if (p.avatar) {
+      dispAvatar.innerHTML = `<img src="${p.avatar}" alt="avatar"/>`;
+    } else {
+      dispAvatar.innerHTML = '👤';
+    }
+
+    // Name
+    document.getElementById('display-name').textContent = p.name || 'Friend';
+
+    // Tags
+    const tags = document.getElementById('display-tags');
+    tags.innerHTML = '';
+    if (p.age)    tags.innerHTML += `<span class="profile-tag">Age ${p.age}</span>`;
+    if (p.gender) tags.innerHTML += `<span class="profile-tag">${p.gender}</span>`;
+    if (p.style)  tags.innerHTML += `<span class="profile-tag">${p.style} style</span>`;
+  }
+
+  function showForm() {
+    document.getElementById('profile-form-wrap').style.display = 'block';
+    document.getElementById('profile-display').classList.remove('visible');
+  }
+</script>
+</body>
+</html>
